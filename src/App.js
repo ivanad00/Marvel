@@ -5,7 +5,7 @@ import Search from "./components/ui/Search";
 import CharacterGrid from "./components/characters/CharacterGrid";
 
 // import Nav from "./components/ui/Nav";
-// import "./App.css";
+import "./App.css";
 
 const App = () => {
   const [items, setItems] = useState([]);
