@@ -3,8 +3,7 @@ import axios from "axios";
 import Header from "./components/ui/header";
 import Search from "./components/ui/Search";
 import CharacterGrid from "./components/characters/CharacterGrid";
-
-// import Nav from "./components/ui/Nav";
+import BookmarkContext from "./components/context/BookmarkContext";
 import "./App.css";
 
 const App = () => {
@@ -40,12 +39,25 @@ const App = () => {
     fetchItems();
   }, [query]);
 
+  // fetching bookmarks from local storage
+  const [bookmarksList, setBookmarksList] = useState(
+    localStorage.getItem("bookmarks")
+      ? JSON.parse(localStorage.getItem("bookmarks"))
+      : []
+  );
+  console.log(bookmarksList);
+  // updating bookmark list
+  useEffect(() => {
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarksList));
+  }, [bookmarksList]);
+
   return (
     <div>
-      <Header />
-      <Search getQuery={(q) => setQuery(q)} />
-      <CharacterGrid isLoading={isLoading} items={items} />
-      {/* // <Nav items={items} /> */}
+      <BookmarkContext.Provider value={{ bookmarksList, setBookmarksList }}>
+        <Header />
+        <Search getQuery={(q) => setQuery(q)} />
+        <CharacterGrid isLoading={isLoading} items={items} />
+      </BookmarkContext.Provider>
     </div>
   );
 };

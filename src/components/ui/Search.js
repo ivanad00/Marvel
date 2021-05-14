@@ -12,7 +12,6 @@ const Search = ({ getQuery }) => {
     <section className="container search">
       <form>
         <label className="center">
-          Search Characters:
           <input
             type="text"
             className="form-control"
