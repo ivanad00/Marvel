@@ -14,27 +14,25 @@ const App = () => {
   //const ts = new Date().getTime();
   const ts = "1620678217043";
   const public_key = "58bb4ebb82f5a4c44065af684d19ff87";
-  //const private_key = "b0575c5fcf08b6bfb6c40fd30c28e670b84af7e2";
-  //const hash = `1620678217043b0575c5fcf08b6bfb6c40fd30c28e670b84af7e258bb4ebb82f5a4c44065af684d19ff87`; // ts + priv + public
+
+  //const hash = `1620678217043b0575c5fcf08b6bfb6c40fd30c28e670b84af7e258bb4ebb82f5a4c44065af684d19ff87`;
+  // hash = ts + priv + public
   // hash dd795e3a8b7c9cfc83ea5e1db1cdc242
   // https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=
 
   useEffect(() => {
     const fetchItems = async () => {
       if (!query) {
+        setItems([]);
+        setIsLoading(false);
+      } else {
         const result = await axios(
-          `${baseUrl}?ts${ts}1&apikey=${public_key}&hash=dd795e3a8b7c9cfc83ea5e1db1cdc242`
+          `${baseUrl}?nameStartsWith=${query}&ts=${ts}&apikey=${public_key}&hash=dd795e3a8b7c9cfc83ea5e1db1cdc242`
         );
-        console.log(result.data);
-        setItems(result.data);
+        console.log(result.data.data.results);
+        setItems(result.data.data.results);
         setIsLoading(false);
       }
-      const result = await axios(
-        `${baseUrl}?nameStartsWith=${query}&ts=${ts}&apikey=${public_key}&hash=dd795e3a8b7c9cfc83ea5e1db1cdc242`
-      );
-      console.log(result.data);
-      setItems(result.data);
-      setIsLoading(false);
     };
     fetchItems();
   }, [query]);
@@ -49,6 +47,7 @@ const App = () => {
   // updating bookmark list
   useEffect(() => {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarksList));
+    console.log(bookmarksList);
   }, [bookmarksList]);
 
   return (
@@ -56,7 +55,10 @@ const App = () => {
       <BookmarkContext.Provider value={{ bookmarksList, setBookmarksList }}>
         <Header />
         <Search getQuery={(q) => setQuery(q)} />
-        <CharacterGrid isLoading={isLoading} items={items} />
+        <CharacterGrid
+          isLoading={isLoading}
+          items={query === "" ? bookmarksList : items}
+        />
       </BookmarkContext.Provider>
     </div>
   );

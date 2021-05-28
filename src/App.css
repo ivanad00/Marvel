@@ -147,14 +147,6 @@ input[type="text"] {
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-.footer {
-  margin: 0;
-  padding: 10px;
-  text-align: center;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-}
 .copyright {
   float: right;
 }
